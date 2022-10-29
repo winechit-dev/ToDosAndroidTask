@@ -13,7 +13,9 @@ buildscript {
                 'retrofit'          : '2.9.0',
                 'loggingInterceptor': '4.9.3',
                 'dagger'            : '2.44',
-                'coroutines'        : '1.6.4'
+                'coroutines'        : '1.6.4',
+                'lifecycle'         : '2.5.1',
+                'activity_ktx'      : '1.6.1'
         ]
     }
 }

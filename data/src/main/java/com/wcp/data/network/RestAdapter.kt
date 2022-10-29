@@ -15,7 +15,6 @@ fun createRetrofitClient(url: String, okHttpClient: OkHttpClient): Retrofit = Re
     .build()
 
 fun createOkHttpClient(
-    context: Context,
     httpLoggingInterceptor: HttpLoggingInterceptor
 ) = OkHttpClient.Builder()
     .also {

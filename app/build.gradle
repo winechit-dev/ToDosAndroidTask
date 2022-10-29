@@ -7,12 +7,12 @@ plugins {
 
 android {
     namespace 'com.wcp.todosandroidtask'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.wcp.todosandroidtask"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -42,6 +42,10 @@ android {
     kapt {
         correctErrorTypes true
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -53,6 +57,13 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "com.google.android.material:material:$versions.material"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintLayout"
+
+    implementation "androidx.activity:activity-ktx:$versions.activity_ktx"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$versions.lifecycle"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecycle"
 
     // dagger
     implementation "com.google.dagger:hilt-android:$versions.dagger"

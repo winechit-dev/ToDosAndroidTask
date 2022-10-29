@@ -1,6 +1,5 @@
 package com.wcp.todosandroidtask.di
 
-import android.content.Context
 import com.wcp.data.BuildConfig
 import com.wcp.data.network.createOkHttpClient
 import com.wcp.data.network.createRetrofitClient
@@ -8,7 +7,6 @@ import com.wcp.data.service.ToDoService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 import okhttp3.OkHttpClient
@@ -27,12 +25,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(
-        @ApplicationContext
-        context: Context
-    ): OkHttpClient {
+    fun provideOkHttpClient(): OkHttpClient {
         return createOkHttpClient(
-            context,
             HttpLoggingInterceptor()
         )
     }
