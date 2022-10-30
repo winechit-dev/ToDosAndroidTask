@@ -10,6 +10,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -23,25 +24,16 @@ class MainViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            getToDos.invoke().suspendEither(
-                {
+            getToDos.invoke()
+                .collectLatest {
                     _uiState.update { currentState ->
                         currentState.copy(
                             isLoading = false,
-                            throwable = it
-                        )
-                    }
-                },
-                {
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            isLoading = false,
-                            throwable = null,
-                            data = it
+                            throwable = it.throwable,
+                            data = it.data
                         )
                     }
                 }
-            )
         }
     }
 }

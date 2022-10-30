@@ -6,6 +6,7 @@ import com.wcp.domain.model.ToDoModel
 import com.wcp.domain.type.Either
 
 interface LocalDataSource {
-    suspend fun getToDoEntities(): Either<DataException, List<ToDoModel>>
+    suspend fun getToDoEntities(): List<ToDoEntity>
     suspend fun saveToDoEntities(entities: List<ToDoEntity>)
+    suspend fun clearToDos()
 }

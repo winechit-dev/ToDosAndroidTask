@@ -4,5 +4,5 @@ import com.wcp.domain.repository.ToDosRepository
 import javax.inject.Inject
 
 class GetToDos @Inject constructor(private val repository: ToDosRepository) {
-    suspend operator fun invoke() = repository.getToDos()
+    operator fun invoke() = repository.toDos
 }

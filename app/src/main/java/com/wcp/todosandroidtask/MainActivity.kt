@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.throwable }.collectLatest {
-                    Toast.makeText(this@MainActivity, it.message.toString(), Toast.LENGTH_LONG)
+                    Toast.makeText(this@MainActivity, it.localizedMessage?.toString() , Toast.LENGTH_LONG)
                         .show()
                 }
             }

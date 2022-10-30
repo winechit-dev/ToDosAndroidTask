@@ -13,4 +13,7 @@ interface ToDoDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertToDos(toDoEntities: List<ToDoEntity>)
+
+    @Query("DELETE FROM toDos")
+    suspend fun clearToDos()
 }
