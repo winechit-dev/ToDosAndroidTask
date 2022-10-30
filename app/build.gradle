@@ -68,6 +68,11 @@ dependencies {
     // dagger
     implementation "com.google.dagger:hilt-android:$versions.dagger"
     kapt "com.google.dagger:hilt-android-compiler:$versions.dagger"
+    kapt "androidx.hilt:hilt-compiler:$versions.dagger_lifecycle"
+
+    // room database
+    implementation "androidx.room:room-runtime:$versions.room"
+    kapt "androidx.room:room-compiler:$versions.room"
 
     testImplementation "junit:junit:$versions.junit"
     androidTestImplementation "androidx.test.ext:junit:$versions.junitExt"

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -41,6 +42,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun collectToDos() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.mapNotNull { it.isLoading }.collectLatest {
+                    binding.progressBar.isVisible = it
+                }
+            }
+        }
+
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.data }.collectLatest {

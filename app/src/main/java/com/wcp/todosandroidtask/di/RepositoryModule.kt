@@ -13,7 +13,7 @@ import javax.inject.Singleton
 abstract class RepositoryModule {
     @Binds
     @Singleton
-    abstract fun bindAccountRepository(
+    abstract fun bindToDosRepository(
         toDosRepositoryImpl: ToDosRepositoryImpl
     ): ToDosRepository
 }

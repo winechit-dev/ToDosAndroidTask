@@ -1,6 +1,5 @@
 package com.wcp.data.network
 
-import android.content.Context
 import com.wcp.data.BuildConfig
 import java.util.concurrent.TimeUnit
 import okhttp3.OkHttpClient

@@ -17,6 +17,7 @@ import kotlinx.coroutines.launch
 class MainViewModel @Inject constructor(
     private val getToDos: GetToDos
 ) : ViewModel() {
+
     private val _uiState = MutableStateFlow(UiState<List<ToDoModel>>())
     val uiState: StateFlow<UiState<List<ToDoModel>>> = _uiState.asStateFlow()
 

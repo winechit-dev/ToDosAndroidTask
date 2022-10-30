@@ -1,4 +1,4 @@
-package com.wcp.data.datasource
+package com.wcp.data.datasource.remote
 
 import com.wcp.data.extensions.convertEither
 import com.wcp.data.service.ToDoService
@@ -7,7 +7,7 @@ import com.wcp.domain.model.ToDoModel
 import com.wcp.domain.type.Either
 import javax.inject.Inject
 
-class RemoteDataSourceImpl @Inject constructor(
+class RemoteRemoteDataSourceImpl @Inject constructor(
     private val service: ToDoService
 ) : RemoteDataSource {
 
