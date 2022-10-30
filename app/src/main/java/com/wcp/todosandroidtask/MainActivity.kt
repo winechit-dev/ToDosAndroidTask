@@ -7,6 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.wcp.todosandroidtask.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -19,19 +20,31 @@ class MainActivity : AppCompatActivity() {
 
     private val viewModel: MainViewModel by viewModels()
 
+    private val todoItemAdapter: TodoItemAdapter by lazy {
+        TodoItemAdapter {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        initUI()
         collectToDos()
+    }
+
+    private fun initUI() {
+        with(binding) {
+            rvTodos.layoutManager = LinearLayoutManager(this@MainActivity)
+            rvTodos.adapter = todoItemAdapter
+        }
     }
 
     private fun collectToDos() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.data }.collectLatest {
-                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_LONG).show()
+                    todoItemAdapter.submitList(it)
                 }
             }
         }
@@ -39,7 +52,8 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.throwable }.collectLatest {
-                    Toast.makeText(this@MainActivity, it.message.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, it.message.toString(), Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         }

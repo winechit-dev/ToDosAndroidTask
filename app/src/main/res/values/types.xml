@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.ToDosAndroidTask.Headline">
+        <item name="fontFamily">@font/inter_extra_bold</item>
+        <item name="android:textSize">56sp</item>
+        <item name="android:textColor">?attr/titleTextColor</item>
+    </style>
+
+    <style name="Theme.ToDosAndroidTask.SubTitle">
+        <item name="fontFamily">@font/inter_bold</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/subtitleTextColor</item>
+    </style>
+
+    <style name="Theme.ToDosAndroidTask.Body">
+        <item name="fontFamily">@font/inter_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textColor">?attr/itemTextColor</item>
+    </style>
+</resources>
