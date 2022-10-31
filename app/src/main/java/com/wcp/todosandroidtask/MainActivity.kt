@@ -42,6 +42,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun collectToDos() {
+
+        // Loading State
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.isLoading }.collectLatest {
@@ -50,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Data State
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.data }.collectLatest {
@@ -59,6 +62,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Error State
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.throwable }.collectLatest {

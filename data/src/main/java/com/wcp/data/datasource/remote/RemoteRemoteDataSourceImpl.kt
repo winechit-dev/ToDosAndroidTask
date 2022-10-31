@@ -1,19 +1,13 @@
 package com.wcp.data.datasource.remote
 
 import com.wcp.data.service.ToDoService
-import com.wcp.domain.Resource
 import com.wcp.domain.model.ToDoModel
 import javax.inject.Inject
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class RemoteRemoteDataSourceImpl @Inject constructor(
     private val service: ToDoService
 ) : RemoteDataSource {
-
-    override val toDos: Flow<Resource<List<ToDoModel>>>
-        get() = flow {
-            val todos = service.getToDos()
-            emit(Resource.Success(todos))
-        }
+    override suspend fun getToDos(): List<ToDoModel> {
+        return service.getToDos()
+    }
 }

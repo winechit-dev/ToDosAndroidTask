@@ -1,44 +1,55 @@
 package com.wcp.data.repository
 
+import android.net.ConnectivityManager
 import com.wcp.data.datasource.local.LocalDataSource
 import com.wcp.data.datasource.remote.RemoteDataSource
-import com.wcp.data.extensions.convertException
-import com.wcp.data.mapper.ToDoMapper
+import com.wcp.data.extensions.isNetworkAvailable
 import com.wcp.domain.Resource
-import com.wcp.domain.exception.DataException
 import com.wcp.domain.model.ToDoModel
 import com.wcp.domain.repository.ToDosRepository
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.onEach
 
 class ToDosRepositoryImpl @Inject constructor(
-    remoteDataSource: RemoteDataSource,
+    private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val mapper: ToDoMapper
+    private val connectivityManager: ConnectivityManager
 ) : ToDosRepository {
 
-    override val toDos: Flow<Resource<List<ToDoModel>>> = remoteDataSource.toDos
-        .onEach { saveInCache(it.data.orEmpty()) }
-        .flowOn(Dispatchers.IO)
-        .catch { exception -> // Executes in the consumer's context
-            when ((exception as Exception).convertException()) {
-                is DataException.Network -> emit(Resource.Success(data = lastCachedToDos()))
-                else -> emit(Resource.Error(throwable = exception, data = lastCachedToDos()))
-            }
-        }
+    private val isOnline get() = connectivityManager.isNetworkAvailable()
 
-    private suspend fun lastCachedToDos(): List<ToDoModel> {
-        return mapper.mapToDoModels(localDataSource.getToDoEntities())
+    override val toDos: Flow<Resource<List<ToDoModel>>> = if (isOnline) remoteToDos() else localToDos()
+
+    private fun remoteToDos(): Flow<Resource<List<ToDoModel>>> {
+        return flow {
+            try {
+                emit(Resource.Success(remoteDataSource.getToDos()))
+            } catch (e: Exception) {
+                emit(Resource.Error(throwable = e, data = lastCachedToDos()))
+            }
+        }.onEach { saveInCache(it.data.orEmpty()) }.flowOn(Dispatchers.IO)
     }
 
-    private suspend fun saveInCache(toDoModels: List<ToDoModel>) {
-        if (toDoModels.isNotEmpty()) {
+    private fun localToDos(): Flow<Resource<List<ToDoModel>>> {
+        return flow {
+            emit(Resource.Success(localDataSource.getToDos()))
+        }
+    }
+
+    private suspend fun lastCachedToDos(): List<ToDoModel> {
+        return localDataSource.getToDos()
+    }
+
+    private suspend fun saveInCache(remoteToDos: List<ToDoModel>) {
+        val localToDos = localDataSource.getToDos()
+
+        if (localToDos != remoteToDos) {
             localDataSource.clearToDos()
-            localDataSource.saveToDoEntities(mapper.mapToDoEntities(toDoModels))
+            localDataSource.saveToDos(remoteToDos)
         }
     }
 }
