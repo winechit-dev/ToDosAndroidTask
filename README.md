@@ -1,5 +1,8 @@
 # ToDosAndroidTask
 
+## Api
+ - https://jsonplaceholder.typicode.com/todos
+ 
 ## Tech
 - Multi Modules
 - DaggerHilt
