@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.data }.collectLatest {
+                    binding.tvCount.text = it.size.toString()
                     todoItemAdapter.submitList(it)
                 }
             }
