@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">Todoist</string>
     <string name="label_tasks">Tasks</string>
     <string name="label_notes">Notes:</string>
 </resources>
