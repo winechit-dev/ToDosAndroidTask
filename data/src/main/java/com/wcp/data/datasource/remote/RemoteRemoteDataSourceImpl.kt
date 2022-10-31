@@ -1,6 +1,5 @@
 package com.wcp.data.datasource.remote
 
-import com.wcp.data.extensions.convertException
 import com.wcp.data.service.ToDoService
 import com.wcp.domain.Resource
 import com.wcp.domain.model.ToDoModel
@@ -14,11 +13,7 @@ class RemoteRemoteDataSourceImpl @Inject constructor(
 
     override val toDos: Flow<Resource<List<ToDoModel>>>
         get() = flow {
-            try {
-                val todos = service.getToDos()
-                emit(Resource.Success(todos))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.convertException()))
-            }
+            val todos = service.getToDos()
+            emit(Resource.Success(todos))
         }
 }

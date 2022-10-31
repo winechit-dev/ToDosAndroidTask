@@ -2,13 +2,13 @@ package com.wcp.todosandroidtask
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.wcp.todosandroidtask.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -61,7 +61,9 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.throwable }.collectLatest {
-                    Toast.makeText(this@MainActivity, it.localizedMessage?.toString() , Toast.LENGTH_LONG)
+                    MaterialAlertDialogBuilder(this@MainActivity)
+                        .setMessage(it.message.toString())
+                        .setPositiveButton("Ok", null)
                         .show()
                 }
             }

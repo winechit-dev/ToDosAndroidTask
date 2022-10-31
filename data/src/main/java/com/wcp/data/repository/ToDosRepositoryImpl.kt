@@ -2,6 +2,7 @@ package com.wcp.data.repository
 
 import com.wcp.data.datasource.local.LocalDataSource
 import com.wcp.data.datasource.remote.RemoteDataSource
+import com.wcp.data.extensions.convertException
 import com.wcp.data.mapper.ToDoMapper
 import com.wcp.domain.Resource
 import com.wcp.domain.exception.DataException
@@ -21,11 +22,11 @@ class ToDosRepositoryImpl @Inject constructor(
 ) : ToDosRepository {
 
     override val toDos: Flow<Resource<List<ToDoModel>>> = remoteDataSource.toDos
-        .onEach { saveInCache(it.data) }
+        .onEach { saveInCache(it.data.orEmpty()) }
         .flowOn(Dispatchers.IO)
         .catch { exception -> // Executes in the consumer's context
-            when (exception) {
-                DataException.Network -> emit(Resource.Success(data = lastCachedToDos()))
+            when ((exception as Exception).convertException()) {
+                is DataException.Network -> emit(Resource.Success(data = lastCachedToDos()))
                 else -> emit(Resource.Error(throwable = exception, data = lastCachedToDos()))
             }
         }
@@ -34,10 +35,10 @@ class ToDosRepositoryImpl @Inject constructor(
         return mapper.mapToDoModels(localDataSource.getToDoEntities())
     }
 
-    private suspend fun saveInCache(toDoModels: List<ToDoModel>?) {
-        toDoModels?.let {
+    private suspend fun saveInCache(toDoModels: List<ToDoModel>) {
+        if (toDoModels.isNotEmpty()) {
             localDataSource.clearToDos()
-            localDataSource.saveToDoEntities(mapper.mapToDoEntities(it))
+            localDataSource.saveToDoEntities(mapper.mapToDoEntities(toDoModels))
         }
     }
 }
