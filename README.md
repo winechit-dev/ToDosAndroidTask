@@ -3,6 +3,7 @@
 ## Tech
 - Multi Modules
 - DaggerHilt
+- Room Database
 - ViewBinding
 - ViewModel
 - Kotlin Flow, StateFlow
