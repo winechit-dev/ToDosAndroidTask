@@ -68,8 +68,9 @@ class MainActivity : AppCompatActivity() {
                 viewModel.uiState.mapNotNull { it.throwable }.collectLatest {
                     MaterialAlertDialogBuilder(this@MainActivity)
                         .setMessage(it.message.toString())
-                        .setPositiveButton("Ok", null)
-                        .show()
+                        .setPositiveButton("Ok") { _, _ ->
+                            viewModel.errorMessageShown()
+                        }.show()
                 }
             }
         }

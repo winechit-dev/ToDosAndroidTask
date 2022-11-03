@@ -33,4 +33,10 @@ class MainViewModel @Inject constructor(private val getToDos: GetToDos) : ViewMo
             }
         }
     }
+
+    fun errorMessageShown() {
+        _uiState.update { currentState ->
+            currentState.copy(throwable = null)
+        }
+    }
 }

@@ -27,6 +27,7 @@ class ToDosRepositoryImpl @Inject constructor(
     private fun remoteToDos(): Flow<Resource<List<ToDoModel>>> {
         return flow {
             try {
+                // throw DataException.Api("Something went wrong!")
                 emit(Resource.Success(remoteDataSource.getToDos()))
             } catch (e: Exception) {
                 emit(Resource.Error(throwable = e, data = lastCachedToDos()))
