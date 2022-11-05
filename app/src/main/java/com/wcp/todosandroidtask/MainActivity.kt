@@ -38,6 +38,10 @@ class MainActivity : AppCompatActivity() {
         with(binding) {
             rvTodos.layoutManager = LinearLayoutManager(this@MainActivity)
             rvTodos.adapter = todoItemAdapter
+
+            swipeRefresh.setOnRefreshListener {
+                viewModel.fetchTodos()
+            }
         }
     }
 
@@ -48,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.isLoading }.collectLatest {
                     binding.progressBar.isVisible = it
+                    if (!it) binding.swipeRefresh.isRefreshing = false
                 }
             }
         }

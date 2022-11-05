@@ -18,6 +18,7 @@ buildscript {
                 'activity_ktx'      : '1.6.1',
                 'room'              : '2.4.3',
                 'dagger_lifecycle'  : '1.0.0',
+                'swiperefreshlayout': '1.1.0'
         ]
     }
 }

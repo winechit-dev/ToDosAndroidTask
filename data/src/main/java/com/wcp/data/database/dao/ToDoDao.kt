@@ -5,9 +5,14 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.wcp.data.database.entity.ToDoEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ToDoDao {
+
+    @Query("SELECT * FROM toDos")
+    fun observeTask(): Flow<List<ToDoEntity>>
+
     @Query("SELECT * FROM toDos")
     suspend fun getToDos(): List<ToDoEntity>
 

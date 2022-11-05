@@ -3,6 +3,7 @@ package com.wcp.todosandroidtask
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.wcp.domain.model.ToDoModel
+import com.wcp.domain.usecase.FetchToDos
 import com.wcp.domain.usecase.GetToDos
 import com.wcp.todosandroidtask.base.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 @HiltViewModel
-class MainViewModel @Inject constructor(private val getToDos: GetToDos) : ViewModel() {
+class MainViewModel @Inject constructor(
+    getToDos: GetToDos,
+    private val fetchToDos: FetchToDos,
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(UiState<List<ToDoModel>>())
     val uiState: StateFlow<UiState<List<ToDoModel>>> = _uiState.asStateFlow()
@@ -37,6 +41,12 @@ class MainViewModel @Inject constructor(private val getToDos: GetToDos) : ViewMo
     fun errorMessageShown() {
         _uiState.update { currentState ->
             currentState.copy(throwable = null)
+        }
+    }
+
+    fun fetchTodos() {
+        viewModelScope.launch {
+            fetchToDos.invoke(true)
         }
     }
 }
