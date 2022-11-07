@@ -8,6 +8,8 @@ sealed class DataException : RuntimeException {
 
     object Network : DataException("Unable to connect. Please check connection.")
 
+    object TasksNotFound : DataException("Tasks not found.")
+
     object Conversion : DataException()
 
     data class Api(

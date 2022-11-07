@@ -3,7 +3,6 @@ package com.wcp.todosandroidtask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
-import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -40,8 +39,9 @@ class MainActivity : AppCompatActivity() {
             rvTodos.adapter = todoItemAdapter
 
             swipeRefresh.setOnRefreshListener {
-                viewModel.fetchTodos()
+                viewModel.fetchTodos(true)
             }
+            viewModel.fetchTodos(false)
         }
     }
 
@@ -51,8 +51,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.mapNotNull { it.isLoading }.collectLatest {
-                    binding.progressBar.isVisible = it
-                    if (!it) binding.swipeRefresh.isRefreshing = false
+                   binding.swipeRefresh.isRefreshing = it
                 }
             }
         }
@@ -74,7 +73,7 @@ class MainActivity : AppCompatActivity() {
                     MaterialAlertDialogBuilder(this@MainActivity)
                         .setMessage(it.message.toString())
                         .setPositiveButton("Ok") { _, _ ->
-                            viewModel.errorMessageShown()
+                            viewModel.userMessageShown()
                         }.show()
                 }
             }

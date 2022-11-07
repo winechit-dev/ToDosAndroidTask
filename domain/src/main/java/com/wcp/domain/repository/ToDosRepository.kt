@@ -5,6 +5,6 @@ import com.wcp.domain.model.ToDoModel
 import kotlinx.coroutines.flow.Flow
 
 interface ToDosRepository {
-    suspend fun fetchToDos(forceUpdate:Boolean)
+    suspend fun fetchToDos(forceUpdate: Boolean): Resource<Boolean>
     val toDos: Flow<Resource<List<ToDoModel>>>
 }

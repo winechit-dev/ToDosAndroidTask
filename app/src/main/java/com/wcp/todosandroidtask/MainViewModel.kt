@@ -38,15 +38,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun errorMessageShown() {
+    fun userMessageShown() {
         _uiState.update { currentState ->
             currentState.copy(throwable = null)
         }
     }
 
-    fun fetchTodos() {
+    fun fetchTodos(forceUpdate: Boolean) {
         viewModelScope.launch {
-            fetchToDos.invoke(true)
+            val result = fetchToDos.invoke(forceUpdate)
+            _uiState.update { currentState ->
+                currentState.copy(
+                    isLoading = false,
+                    throwable = result.throwable
+                )
+            }
         }
     }
 }
